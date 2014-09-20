@@ -8,6 +8,7 @@ class InstagramWorker
       loc.grams.create(
         body: media.caption ? media.caption.text : '',
         likes: media.likes.count
+        insta_id: media.id
       )
     end
 	end
