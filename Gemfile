@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 
-ruby '2.1.2'
+ruby '2.1.1'
+
+gem 'sidekiq'
+gem 'instagram'
+gem 'twitter'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.1'
@@ -36,6 +40,3 @@ group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
-
-gem 'instagram'
-gem 'twitter'
