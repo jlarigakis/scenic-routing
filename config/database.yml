@@ -6,7 +6,7 @@
 development:
   adapter: postgis
   encoding: unicode
-  database: 'development_scenic_routing'
+  database: 'scenic_routing_development'
   pool: 5
   timeout: 5000
 
