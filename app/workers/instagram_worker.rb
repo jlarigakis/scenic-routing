@@ -7,7 +7,7 @@ class InstagramWorker
     client.location_recent_media(loc.insta_id, {count: 100}).each do |media|
       loc.grams.create(
         body: media.caption ? media.caption.text : '',
-        likes: media.likes.count
+        likes: media.likes.count,
         insta_id: media.id
       )
     end
