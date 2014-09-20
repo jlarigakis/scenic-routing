@@ -17,3 +17,6 @@
 
 # IntelliJ stuff
 .idea
+
+# secretz n stuf
+config/application.yml
