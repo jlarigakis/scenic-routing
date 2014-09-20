@@ -11,17 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140920085458) do
+ActiveRecord::Schema.define(version: 20140920110836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "hstore"
 
   create_table "grams", force: true do |t|
-    t.spatial  "lonlat",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
-    t.string   "body"
+    t.text     "body"
     t.integer  "likes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "location_id"
+    t.string   "insta_id"
+  end
+
+  create_table "locations", force: true do |t|
+    t.spatial  "longlat",    limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.string   "name"
+    t.string   "insta_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

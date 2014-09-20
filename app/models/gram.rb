@@ -1,3 +1,6 @@
 class Gram < ActiveRecord::Base
-  set_rgeo_factory_for_column(:lonlat, RGeo::Geographic.spherical_factory(:srid => 4326))
+  belongs_to :grams
+
+  validates :insta_id, uniqueness: true
+
 end

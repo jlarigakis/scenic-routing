@@ -1,14 +1,13 @@
 class InstagramWorker
 	include Sidekiq::Worker
 
-	def perform(lat, long, min, max)
+	def perform(loc_id)
 	  client = Instagram.client(client_secret: ENV['instagram_client_secret'], client_id: ENV['instagram_client_id'])
-    client.media_search(lat, long, {min_timestamp: min, max_timestamp: max}).each do |media|
-      pos = media.location
-    	Gram.create(
-    		lonlat: Gram.rgeo_factory_for_column(:lonlat).point(pos.longitude, pos.latitude),
-    		body: 	media.caption ? media.caption.text : '',
-    		likes: 	media.likes.size
+    loc = Location.find(loc_id)
+    client.location_recent_media(loc.insta_id, {count: 100}).each do |media|
+      loc.grams.create(
+        body: media.caption ? media.caption.text : '',
+        likes: media.likes.count
       )
     end
 	end
