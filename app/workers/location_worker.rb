@@ -9,7 +9,7 @@ class LocationWorker
         longlat: Location.rgeo_factory_for_column(:longlat).point(loc.longitude, loc.latitude),
         insta_id: loc.id)
       InstagramWorker.perform_async(l.id) if l.persisted?
-      LocationWorker.perform_async(loc.longitude, loc.latitude, depth - 1) if depth > 0
+      LocationWorker.perform_async(loc.longitude, loc.latitude, depth - 1) if depth > 0 && l.persisted?
     end
   end
 end
