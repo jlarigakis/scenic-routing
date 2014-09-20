@@ -10,7 +10,7 @@ gem 'sqlite3'
 
 gem 'pg'
 gem 'activerecord-postgres-hstore'
-gem 'geokit-rails'
+gem 'activerecord-postgis-adapter'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
