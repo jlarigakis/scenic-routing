@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class InstragramTest < ActiveSupport::TestCase
+class GramTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
