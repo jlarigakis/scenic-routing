@@ -43,6 +43,7 @@ class @Map
   plotRoute: (e) =>
 
     unless @a
+      @clearPath() unless @b
       @a = e.latLng
       @marker = @plot e.latLng.k, e.latLng.B, 'Head'
     else
@@ -58,6 +59,10 @@ class @Map
         @a = null
         # @plot data.latitude, data.longitude, data.name
     
+  clearPath: ->
+    @display.setMap(null)
+    @display = new google.maps.DirectionsRenderer()
+    @display.setMap(@map)
 
   findPath: (waypoint) ->
     wp = []
@@ -70,10 +75,7 @@ class @Map
       optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.WALKING
     }
-    console.log @a
-    @display.setMap(null)
-    @display = new google.maps.DirectionsRenderer()
-    @display.setMap(@map)
+    @clearPath()
     @service.route req, (resp, status) =>
       if status == google.maps.DirectionsStatus.OK
         @marker.setMap(null)
