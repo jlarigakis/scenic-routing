@@ -6,4 +6,9 @@ class LocationsController < ApplicationController
     respond_with @locations
   end
 
+  def search
+    id = `python getPred.py #{params[:midpoint][:latitude]} #{params[:midpoint][:longitude]} #{params[:radius]}`
+    @loc = Location.find(id)
+    respond_with @loc
+  end
 end

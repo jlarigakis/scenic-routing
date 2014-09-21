@@ -27,4 +27,5 @@ class @Map
     else
       @b = e.latLng
       mid = {longitude: (@a.B + @b.B)/2, latitude: (@a.k + @b.k)/2}
-      console.log mid
+      rad = Math.sqrt((@a.B - @b.B)*(@a.B - @b.B) + (@a.k - @b.k)*(@a.k - @b.k))
+      $.get('/locations/search', {midpoint: mid, radius: rad})
