@@ -43,7 +43,7 @@ class @Map
   plotRoute: (e) =>
 
     unless @a
-      @clearPath() unless @b
+      @clearPath() if @b
       @a = e.latLng
       @marker = @plot e.latLng.k, e.latLng.B, 'Head'
     else
