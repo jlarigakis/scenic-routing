@@ -1,3 +1,4 @@
+import cPickle
 import psycopg2
 import numpy as np
 from sklearn import linear_model
@@ -23,6 +24,9 @@ from sklearn.neighbors import NearestCentroid
 from sklearn.utils.extmath import density
 from sklearn import metrics
 
+from sklearn import svm, datasets
+from sklearn.cross_validation import train_test_split
+from sklearn.metrics import confusion_matrix
 
 # Connect to PostgreSQL server and get rows
 try:
@@ -120,15 +124,100 @@ def benchmark(clf):
 
     if True:
         print("confusion matrix:")
-        print(metrics.confusion_matrix(y_test, pred))
-
+        cm = metrics.confusion_matrix(y_test, pred)
+        
     print()
     clf_descr = str(clf).split('(')[0]
     return clf_descr, score, train_time, test_time
 
 
+clsfier = NearestCentroid().fit(X_train, y_train)
+
+with open('model.pkl', 'wb') as fid:
+    cPickle.dump(clsfier, fid)
+
+with open('vctr.pkl', 'wb') as fid2:
+    cPickle.dump(vectorizer, fid2)
+##############################################
+##############################################
+##############################################
+# results = []
+# for clf, name in (
+#         (RidgeClassifier(tol=1e-2, solver="lsqr"), "Ridge Classifier"),
+#         (Perceptron(n_iter=50), "Perceptron"),
+#         (PassiveAggressiveClassifier(n_iter=50), "Passive-Aggressive"),
+#         (KNeighborsClassifier(n_neighbors=10), "kNN")):
+#     print('=' * 80)
+#     print(name)
+#     results.append(benchmark(clf))
+
+# for penalty in ["l2", "l1"]:
+#     print('=' * 80)
+#     print("%s penalty" % penalty.upper())
+#     # Train Liblinear model
+#     results.append(benchmark(LinearSVC(loss='l2', penalty="L2",
+#                                             dual=False, tol=1e-3)))
+
+#     # Train SGD model
+#     results.append(benchmark(SGDClassifier(alpha=.0001, n_iter=50,
+#                                            penalty=penalty)))
+
 # Train SGD with Elastic Net penalty
-print('=' * 80)
-print("Elastic-Net penalty")
-benchmark(SGDClassifier(alpha=.0001, n_iter=50, penalty="elasticnet"))
-# benchmark(LinearSVC(loss='l2', penalty="L1", dual=False, tol=1e-3))
+# print('=' * 80)
+# print("Elastic-Net penalty")
+# results.append(benchmark(SGDClassifier(alpha=.0001, n_iter=50,
+#                                        penalty="elasticnet")))
+
+# # Train NearestCentroid without threshold
+# print('=' * 80)
+# print("NearestCentroid (aka Rocchio classifier)")
+# results.append(benchmark(NearestCentroid()))
+
+# # Train sparse Naive Bayes classifiers
+# print('=' * 80)
+# print("Naive Bayes")
+# results.append(benchmark(MultinomialNB(alpha=.01)))
+# results.append(benchmark(BernoulliNB(alpha=.01)))
+
+# class L1LinearSVC(LinearSVC):
+#     def fit(self, X, y):
+#         # The smaller C, the stronger the regularization.
+#         # The more regularization, the more sparsity.
+#         self.transformer_ = LinearSVC(penalty="l1",
+#                                       dual=False, tol=1e-3)
+#         X = self.transformer_.fit_transform(X, y)
+#         return LinearSVC.fit(self, X, y)
+
+#     def predict(self, X):
+#         X = self.transformer_.transform(X)
+#         return LinearSVC.predict(self, X)
+
+# print('=' * 80)
+# print("LinearSVC with L1-based feature selection")
+# results.append(benchmark(L1LinearSVC()))
+
+
+# # make some plots
+# indices = np.arange(len(results))
+
+# results = [[x[i] for x in results] for i in range(4)]
+
+# clf_names, score, training_time, test_time = results
+# training_time = np.array(training_time) / np.max(training_time)
+# test_time = np.array(test_time) / np.max(test_time)
+
+# plt.figure(figsize=(12, 8))
+# plt.title("Score")
+# plt.barh(indices, score, .2, label="score", color='r')
+# plt.barh(indices + .3, training_time, .2, label="training time", color='g')
+# plt.barh(indices + .6, test_time, .2, label="test time", color='b')
+# plt.yticks(())
+# plt.legend(loc='best')
+# plt.subplots_adjust(left=.25)
+# plt.subplots_adjust(top=.95)
+# plt.subplots_adjust(bottom=.05)
+
+# for i, c in zip(indices, clf_names):
+#     plt.text(-.3, i, c)
+
+# plt.show()
