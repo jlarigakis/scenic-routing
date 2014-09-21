@@ -6,7 +6,7 @@ class @Map
     @data = JSON.parse(bootstrap)
     @a = null
     @b = null
-    @markers = []
+    @marker = null
     options =
       center: { lat: @data[2].latitude, lng: @data[2].longitude},
       zoom: 16
@@ -42,17 +42,36 @@ class @Map
 
     unless @a
       @a = e.latLng
-      @markers.push @plot e.latLng.k, e.latLng.B, 'Head'
+      @marker = @plot e.latLng.k, e.latLng.B, 'Head'
     else
       @b = e.latLng
-      @markers.push @plot e.latLng.k, e.latLng.B, 'Tail'
+      # @markers.push @plot e.latLng.k, e.latLng.B, 'Tail'
       mid = {longitude: (@a.B + @b.B)/2, latitude: (@a.k + @b.k)/2}
       rad = Math.sqrt((@a.B - @b.B)*(@a.B - @b.B) + (@a.k - @b.k)*(@a.k - @b.k))
       d = @distance(@a,@b) * 0.75
 
       $.get('/locations/search', {midpoint: mid, radius: d})
-      .done (data)->
-        @plot data.latitude, data.longitude, data.name
-      @a = null
-      @b = null
+      .done (data) =>
+        @findPath(data)
+        # @plot data.latitude, data.longitude, data.name
+    
 
+  findPath: (waypoint) ->
+    wp = []
+    if waypoint
+      wp = [{location: new google.maps.LatLng(waypoint.latitude, waypoint.longitude), stopover: true }] 
+    req = {
+      origin: @a,
+      destination: @b,
+      waypoints: wp,
+      optimizeWaypoints: true,
+      travelMode: google.maps.TravelMode.WALKING
+    }
+    console.log @a
+    display = new google.maps.DirectionsRenderer()
+    display.setMap(@map)
+    service = new google.maps.DirectionsService()
+    service.route req, (resp, status) =>
+      if status == google.maps.DirectionsStatus.OK
+        @marker.setMap(null)
+        display.setDirections(resp)
