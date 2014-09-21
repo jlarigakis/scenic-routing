@@ -6,6 +6,8 @@ class @Map
     @data = JSON.parse(bootstrap)
     @a = null
     @b = null
+    @display = new google.maps.DirectionsRenderer()
+    @service = new google.maps.DirectionsService()
     @marker = null
     options =
       center: { lat: @data[2].latitude, lng: @data[2].longitude},
@@ -53,6 +55,7 @@ class @Map
       $.get('/locations/search', {midpoint: mid, radius: d})
       .done (data) =>
         @findPath(data)
+        @a = null
         # @plot data.latitude, data.longitude, data.name
     
 
@@ -68,10 +71,10 @@ class @Map
       travelMode: google.maps.TravelMode.WALKING
     }
     console.log @a
-    display = new google.maps.DirectionsRenderer()
-    display.setMap(@map)
-    service = new google.maps.DirectionsService()
-    service.route req, (resp, status) =>
+    @display.setMap(null)
+    @display = new google.maps.DirectionsRenderer()
+    @display.setMap(@map)
+    @service.route req, (resp, status) =>
       if status == google.maps.DirectionsStatus.OK
         @marker.setMap(null)
-        display.setDirections(resp)
+        @display.setDirections(resp)
