@@ -12,11 +12,10 @@ class @Map
     
     @map = new google.maps.Map(document.getElementById('map-canvas'), options)
     @bootstrap()
-
+    google.maps.event.addListener @map, 'rightclick', @plotRoute
   bootstrap: ->
     for i in @data
       m = @plot(i.latitude, i.longitude, i.name)
-      google.maps.event.addListener m, 'click', @plotRoute
         
   plot: (lat, long, name) ->
     marker = new google.maps.Marker(
@@ -25,6 +24,7 @@ class @Map
       title: name
     )
   plotRoute: (e) =>
+
     unless @a
       @a = e.latLng
     else
@@ -45,6 +45,7 @@ class @Map
       d = R * c * 1000 * 0.75
 
       $.get('/locations/search', {midpoint: mid, radius: d})
-
+      .done (data)->
+        console.log(data)
       @a = null
       @b = null
