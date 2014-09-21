@@ -36,3 +36,9 @@ footer {
 	/*position: absolute;
 	bottom: 0px;*/
 }
+
+html, body, #map-canvas {
+  height: calc(100% - 25pt);
+  margin: 0;
+  padding: 0;
+}
