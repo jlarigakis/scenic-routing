@@ -7,8 +7,9 @@ class LocationsController < ApplicationController
   end
 
   def search
-    id = `python getPred.py #{params[:midpoint][:latitude]} #{params[:midpoint][:longitude]} #{params[:radius]}`
-    @loc = Location.find(id)
+    puts "python app/classifier/getPred.py #{params[:midpoint][:latitude]} #{params[:midpoint][:longitude]} #{params[:radius]}"
+    id = `python app/classifier/getPred.py #{params[:midpoint][:latitude]} #{params[:midpoint][:longitude]} #{params[:radius]}`
+    @loc = Location.find_by(id:id)
     respond_with @loc
   end
 end

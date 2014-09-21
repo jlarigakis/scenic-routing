@@ -17,8 +17,8 @@ with open('model.pkl', 'rb') as fid:
 with open('vctr.pkl', 'rb') as fid2:
     vectorizer = cPickle.load(fid2)
 
-# get params (longitude, latitude, radius)
-lon, lat, radius = sys.argv[1::]
+# get params (latitude, longitude, radius)
+lat, lon, radius = sys.argv[1::]
 
 # Connect to PostgreSQL server and get rows
 # find points to predict	
@@ -31,6 +31,9 @@ cur = conn.cursor()
 cur.execute('SELECT * FROM grams LEFT JOIN locations ON grams.location_id=locations.id WHERE ST_DWithin(locations.longlat, ST_MakePoint(' + str(lon) + ',' + str(lat) + '),' + str(radius) + ')')
 
 rows = cur.fetchall()
+
+if len(rows) == 0:
+	print 'None'
 
 mutRows = [list(row) for row in rows]
 text = [row[1] for row in mutRows]
@@ -49,7 +52,7 @@ if index is not None:
 	finalAnswer = cur.fetchall()
 	scenery = finalAnswer[0][0]
 
-	print finalAnswer
+	# print finalAnswer
 	print scenery
 else:
 	print 'None'
