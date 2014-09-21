@@ -13,3 +13,4 @@ class LocationWorker
     end
   end
 end
+

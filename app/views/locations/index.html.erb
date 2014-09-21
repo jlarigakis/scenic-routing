@@ -1,0 +1,11 @@
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<div id="map-canvas"></div>
+<script>
+var map = new Map('<%== escape_javascript( @locations.to_json) %>');
+</script>
+<style>
+html, body, #map-canvas {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

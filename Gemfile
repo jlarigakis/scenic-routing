@@ -8,6 +8,7 @@ gem 'twitter'
 gem 'rails', '4.0.1'
 
 gem 'figaro'
+gem 'kaminari'
 
 gem 'pg'
 gem 'activerecord-postgres-hstore'
