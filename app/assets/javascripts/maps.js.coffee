@@ -28,10 +28,10 @@ class @Map
     )
   distance: (a, b) ->
     R = 6371
-    φ1 = @toRad(a.B)
+    φ1 = @toRad(a.D)
     φ2 = @toRad(a.k)
     Δφ = @toRad((a.k-b.k))
-    Δλ = @toRad((a.B-b.B))
+    Δλ = @toRad((a.D-b.D))
 
     aa = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
             Math.cos(φ1) * Math.cos(φ2) *
@@ -41,16 +41,18 @@ class @Map
     R * c * 1000
 
   plotRoute: (e) =>
-
     unless @a
       @clearPath() if @b
       @a = e.latLng
-      @marker = @plot e.latLng.k, e.latLng.B, 'Head'
+      @marker = @plot e.latLng.k, e.latLng.D, 'Head'
     else
       @b = e.latLng
-      # @markers.push @plot e.latLng.k, e.latLng.B, 'Tail'
-      mid = {longitude: (@a.B + @b.B)/2, latitude: (@a.k + @b.k)/2}
-      rad = Math.sqrt((@a.B - @b.B)*(@a.B - @b.B) + (@a.k - @b.k)*(@a.k - @b.k))
+      # @markers.push @plot e.latLng.k, e.latLng.D, 'Tail'
+      console.log @a 
+      console.log @b
+
+      mid = {longitude: (@a.D + @b.D)/2, latitude: (@a.k + @b.k)/2}
+      rad = Math.sqrt((@a.D - @b.D)*(@a.D - @b.D) + (@a.k - @b.k)*(@a.k - @b.k))
       d = @distance(@a,@b) * 0.75
 
       $.get('/locations/search', {midpoint: mid, radius: d})
