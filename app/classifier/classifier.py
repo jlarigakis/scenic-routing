@@ -130,14 +130,14 @@ def benchmark(clf):
     clf_descr = str(clf).split('(')[0]
     return clf_descr, score, train_time, test_time
 
+print y_train
+# clsfier = NearestCentroid().fit(X_train, y_train)
 
-clsfier = NearestCentroid().fit(X_train, y_train)
+# with open('model.pkl', 'wb') as fid:
+#     cPickle.dump(clsfier, fid)
 
-with open('model.pkl', 'wb') as fid:
-    cPickle.dump(clsfier, fid)
-
-with open('vctr.pkl', 'wb') as fid2:
-    cPickle.dump(vectorizer, fid2)
+# with open('vctr.pkl', 'wb') as fid2:
+#     cPickle.dump(vectorizer, fid2)
 ##############################################
 ##############################################
 ##############################################
