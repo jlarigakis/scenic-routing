@@ -12,14 +12,14 @@ class @Map
     options =
       center: { lat: @data[2].latitude, lng: @data[2].longitude},
       zoom: 16
-
+    
     @map = new google.maps.Map(document.getElementById('map-canvas'), options)
     # @bootstrap()
     google.maps.event.addListener @map, 'rightclick', @plotRoute
   bootstrap: ->
     for i in @data
       m = @plot(i.latitude, i.longitude, i.name)
-
+        
   plot: (lat, long, name) ->
     marker = new google.maps.Marker(
       position: new google.maps.LatLng(lat,long),
@@ -48,7 +48,7 @@ class @Map
     else
       @b = e.latLng
       # @markers.push @plot e.latLng.k, e.latLng.D, 'Tail'
-      console.log @a
+      console.log @a 
       console.log @b
 
       mid = {longitude: (@a.D + @b.D)/2, latitude: (@a.k + @b.k)/2}
@@ -60,7 +60,7 @@ class @Map
         @findPath(data)
         @a = null
         # @plot data.latitude, data.longitude, data.name
-
+    
   clearPath: ->
     @display.setMap(null)
     @display = new google.maps.DirectionsRenderer()
@@ -69,7 +69,7 @@ class @Map
   findPath: (waypoint) ->
     wp = []
     if waypoint
-      wp = [{location: new google.maps.LatLng(waypoint.latitude, waypoint.longitude), stopover: true }]
+      wp = [{location: new google.maps.LatLng(waypoint.latitude, waypoint.longitude), stopover: true }] 
     req = {
       origin: @a,
       destination: @b,
